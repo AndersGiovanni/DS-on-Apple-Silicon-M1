@@ -1,4 +1,4 @@
-# DS on Apple Silicon
+# DS on Apple Silicon M1
 How to setup your Apple Silicon MacBook for data science.
 
 I personally had a hard time setting up my python projects on my new MacBook Air with M1 chip due to limited Apple Silicon support for many packages. And in order to spare you guys for the pain I've been through I decided to make a guide on how I did it.
