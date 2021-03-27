@@ -117,7 +117,16 @@ pyenv test_env activate
 
 Now make sure that your environment is installed correctly with the right python version by `python -V`.
 
-From this activated environment you should be able to install packages like normal using `pip`. You should also be able to install and activate your `poetry` environment. **MAKE SURE THAT YOUR PYENV ENVIRONMENT IS ACTIVATED AT FIRST!!!**
+From this activated environment you should be able to install packages like normal using `pip`. You might want to **UPGRADE** the pip version - I encountered quite a few errors installing packages due to an old pip version. When tryin to install `regex` I got the error 
+
+```bash
+ERROR: regex-2021.3.17-cp38-cp38-macosx_10_9_x86_64.whl is not a supported wheel on this platform.
+WARNING: You are using pip version 20.1.1; however, version 21.0.1 is available.
+```
+
+But after running `pip install --upgrade pip` within my pyenv it worked like a charm.
+
+You should also be able to install and activate your `poetry` environment. **MAKE SURE THAT YOUR PYENV ENVIRONMENT IS ACTIVATED AT FIRST!!!**
 
 ## Credits
 
