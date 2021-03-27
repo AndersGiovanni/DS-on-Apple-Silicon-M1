@@ -86,7 +86,112 @@ if command -v pyenv 1>/dev/null 2>&1; then
 fi
 ```
 
+Make sure that you have python 3.9.x by `python3 -V`
+
+**Install pipx to manage global packages:**
+
+```bash
+python3 -m pip install --user pipx
+python3 -m userpath append ~/.local/bin
+```
+
+**Install global packages**
+
+```bash
+python3 -m pipx install flake8
+python3 -m pipx install black
+```
+
+Ensure that your `.zshrc` contains the following (replace YOUR_USER_NAME). Note that the code below will create an alias for your python. 
+```bash
+export PATH="/opt/homebrew/bin:/Users/YOUR_USER_NAME/Library/Python/3.9/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Library/Apple/usr/bin:$PATH"
+export SDKROOT="/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk"
+
+# pyenv
+export PATH="$HOME/.pyenv/bin:$PATH"
+if command -v pyenv 1>/dev/null 2>&1; then
+  eval "$(pyenv init -)"
+fi
+
+# python3 Alias
+alias python="python3"
+
+# pipx
+export PATH="~/.local/bin:$PATH"
+```
+
+**Install python 3.9.1 in pyenv**
+
+`pyenv install 3.9.1`
+
+**Install python 3.8.6 in pyenv**
+
+`CFLAGS="-I$(brew --prefix openssl)/include -I$(brew --prefix bzip2)/include -I$(brew --prefix readline)/include -I$(xcrun --show-sdk-path)/usr/include -I$(brew --prefix xz)/include" LDFLAGS="-L$(brew --prefix openssl)/lib -L$(brew --prefix readline)/lib -L$(brew --prefix zlib)/lib -L$(brew --prefix bzip2)/lib -L$(brew --prefix xz)/lib" pyenv install --patch 3.8.6 <<(curl -sSL https://raw.githubusercontent.com/Homebrew/formula-patches/113aa84/python/3.8.3.patch\?full_index\=1)
+`
+
+**Set pyenv global for poetry**
+
+`pyenv global 3.9.1`
+
+**Install poetry**
+
+```bash
+curl -sSL https://raw.githubusercontent.com/sdispater/poetry/master/get-poetry.py | python
+
+poetry config virtualenvs.in-project true
+```
+
+Add the following to your `.zshrc` file.
+
+```bash
+### Add these next lines to protect your system python from
+### polution from 3rd-party packages
+
+# pip should only run if there is a virtualenv currently activated
+export PIP_REQUIRE_VIRTUALENV=true
+ 
+# commands to override pip restriction above.
+# use `gpip` or `gpip3` to force installation of
+# a package in the global python environment
+# Never do this! It is just an escape hatch.
+gpip(){
+   PIP_REQUIRE_VIRTUALENV="" pip "$@"
+}
+gpip3(){
+   PIP_REQUIRE_VIRTUALENV="" pip3 "$@"
+}
+```
+
+**Create poetry project**
+
+```bash
+poetry new name_of_project
+cd name_of_project
+pyenv local 3.8.6
+```
+
+**Install native Tensorflow, Numpy and other dependencies into poetry environment**
+- [Download Apple's Tensorflow package.](https://github.com/apple/tensorflow_macos/releases/download/v0.1alpha1/tensorflow_macos-0.1alpha1.tar.gz)
+- Create a `packages` folder in your poetry environment.
+- Extract and copy all the `.whl` files from the from Apple Tensorflow (in the `arm64` subfolder) into your `packages` folder.
+- [Download the repack of Apples Tensorflow](https://github.com/rybodiddly/Poetry-Pyenv-Homebrew-Numpy-TensorFlow-on-Apple-Silicon-M1/releases/download/2.4.0rc0-Repack/tensorflow-2.4.0rc0-cp38-cp38-macosx_11_0_arm64.whl) and copy it into your packages folder. The repack resolves dependency issues.
+- Edit your `[tool.poetry.dependencies]` section in the `project.toml` file to look like this:
+
+```bash
+[tool.poetry.dependencies]
+python = "^3.8"
+numpy = {path = "packages/numpy-1.18.5-cp38-cp38-macosx_11_0_arm64.whl"}
+grpcio = {path = "packages/grpcio-1.33.2-cp38-cp38-macosx_11_0_arm64.whl"}
+h5py = {path = "packages/h5py-2.10.0-cp38-cp38-macosx_11_0_arm64.whl"}
+tensorflow = {path = "packages/tensorflow-2.4.0rc0-cp38-cp38-macosx_11_0_arm64.whl"}
+tensorflow_addons = {path = "packages/tensorflow_addons-0.11.2+mlcompute-cp38-cp38-macosx_11_0_arm64.whl"}
+```
+- Ensure that the poetry python version is 3.8.6 by running `pyenv local 3.8.6`. If you want it globaly you can run `pyenv global 3.8.6`.
+- Now run `poetry install`.
+- The environment can now be initialized by `poetry shell`. 
+
 TO BE CONTINUED
+
 
 ### Intel based virtual environments
 
