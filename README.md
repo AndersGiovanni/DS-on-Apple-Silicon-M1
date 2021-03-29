@@ -1,9 +1,9 @@
 # DS on Apple Silicon M1
 How to setup your Apple Silicon MacBook for data science.
 
-I personally had a hard time setting up my python projects on my new MacBook Air with M1 chip due to limited Apple Silicon support for many packages. And in order to spare you guys for the pain I've been through I decided to make a guide on how I did it.
+I personally had a hard time setting up my python projects on my new MacBook Air with the M1 chip due to limited Apple Silicon support for many packages. In order to spare you guys the pain, I've been through, I decided to make a guide on how I did it.
 
-As os March 25 2021, many python packages are still not supported for running natively on the Apple Silicon chips. Below I'll provide you with a guide on how to set up python and virtual environments in order to be able to work on data science. This will include both 'native' environments with optimized packages, but also Intel-based such that you can setup/run your 'normal' environments with the 'old' packages. 
+As of March 25 2021, many python packages are still not supported for running natively on the Apple Silicon chips. Below I'll provide you with a guide on how to set up python and virtual environments in order to work on data science. This will include both 'native' environments with optimized packages, but also Intel-based, such that you can setup/run your 'normal' environments with the 'old' packages. 
 
 ## Installing Rosetta 2
 
@@ -28,10 +28,9 @@ Homebrew x86_64 can be install by the command:
 arch -x86_64 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
 ```
 
-
 ### Install arm64 Homebrew
 
-arm64 based Homebrew can be install by:
+arm64 based Homebrew can be installed by:
 
 ```bash
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
