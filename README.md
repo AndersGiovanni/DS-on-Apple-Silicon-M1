@@ -216,7 +216,7 @@ pyenv virtualenv 3.8.5 test_env
 Activate virtual environment
 
 ```bash
-pyenv test_env activate
+pyenv activate test_env
 ```
 
 Now make sure that your environment is installed correctly with the right python version by `python -V`.
